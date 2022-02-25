@@ -38,7 +38,7 @@ export default function Filters() {
             name="comparison"
             onChange={ handleNumericFilter }
           >
-            <option>maior que</option>
+            <option defaultValue>maior que</option>
             <option>menor que</option>
             <option>igual a</option>
           </select>

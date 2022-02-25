@@ -41,10 +41,9 @@ export default function PlanetsProvider({ children }) {
   }, [filterByName, allPlanets]);
 
   const handleNumericFilter = ({ target: { name, value } }) => {
-    console.log(filterByNumericValues);
     const getValues = filterByNumericValues.map((item, index) => {
       const values = { ...item };
-      if (index === 0) values[name] = value;
+      if (index === filterByNumericValues.length - 1) values[name] = value;
       return values;
     });
     setFilterByNumericValues(getValues);
@@ -68,19 +67,25 @@ export default function PlanetsProvider({ children }) {
     setPlanets(filtered);
     setColumnOptions(newOptions);
     if (showFilters[0].column) {
-      const newValues = [...INITIAL_STATE, ...showFilters];
+      const newValues = [...showFilters, ...INITIAL_STATE];
       setFilterByNumericValues(newValues);
     }
   }, [showFilters, allPlanets]);
 
   const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+    e.preventDefault();
     setShowFilters(filterByNumericValues);
+    let filtered = [...allPlanets];
+    showFilters.forEach(({ column }) => {
+      if (!column) {
+        filtered = filtered.filter((planet) => Number(planet.population) > 0);
+      }
+    });
+    setPlanets(filtered);
   };
 
   const removeButton = (name) => {
     const newValues = filterByNumericValues.filter(({ column }) => column !== name);
-    console.log(newValues);
     setFilterByNumericValues(newValues);
     setShowFilters(newValues);
   };
