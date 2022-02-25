@@ -3,22 +3,27 @@ import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 import fetchPlanets from '../services/fetchPlanets';
 
-const INITIAL_STATE = { column: '', comparison: '', value: '0' };
+const INITIAL_STATE = [{ column: '', comparison: '', value: '' }];
+const COLUMNS = ['population', 'orbital_period', 'diameter',
+  'rotation_period', 'surface_water'];
 
 export default function PlanetsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [allPlanets, setAllPlanets] = useState([]);
   const [filterByName, setFilterByName] = useState({ name: '' });
   const [filterByNumericValues, setFilterByNumericValues] = useState(
-    [INITIAL_STATE],
+    INITIAL_STATE,
   );
-  const [columnOptions, setColumnOptions] = useState(['population',
-    'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+  const [columnOptions, setColumnOptions] = useState([COLUMNS]);
+  const [showFilters, setShowFilters] = useState(INITIAL_STATE);
+  const [sortColumn, setSortColumn] = useState('');
+  const [radioButtons, setRadioButtons] = useState('');
 
   const getPlanets = async () => {
     const data = await fetchPlanets();
+    const alphabeticalSort = data.sort((a, b) => a.name.localeCompare(b.name));
     setAllPlanets(data);
-    setPlanets(data);
+    setPlanets(alphabeticalSort);
   };
 
   useEffect(() => {
@@ -36,6 +41,7 @@ export default function PlanetsProvider({ children }) {
   }, [filterByName, allPlanets]);
 
   const handleNumericFilter = ({ target: { name, value } }) => {
+    console.log(filterByNumericValues);
     const getValues = filterByNumericValues.map((item, index) => {
       const values = { ...item };
       if (index === 0) values[name] = value;
@@ -44,18 +50,10 @@ export default function PlanetsProvider({ children }) {
     setFilterByNumericValues(getValues);
   };
 
-  // const removeFromOptions = (column) => {
-  //   const newOptions = [...columnOptions];
-
-  //   setColumnOptions()
-  // }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     let filtered = [...allPlanets];
-    let newOptions = [...columnOptions];
-    filterByNumericValues.forEach(({ column, comparison, value }) => {
-      console.log(filtered);
+    let newOptions = [...COLUMNS];
+    showFilters.forEach(({ column, comparison, value }) => {
       if (comparison === 'maior que') {
         filtered = filtered.filter((planet) => Number(planet[column]) > value);
       }
@@ -69,8 +67,54 @@ export default function PlanetsProvider({ children }) {
     });
     setPlanets(filtered);
     setColumnOptions(newOptions);
-    const newValues = [INITIAL_STATE, ...filterByNumericValues];
+    if (showFilters[0].column) {
+      const newValues = [...INITIAL_STATE, ...showFilters];
+      setFilterByNumericValues(newValues);
+    }
+  }, [showFilters, allPlanets]);
+
+  const handleSubmit = (e) => {
+    if (e) e.preventDefault();
+    setShowFilters(filterByNumericValues);
+  };
+
+  const removeButton = (name) => {
+    const newValues = filterByNumericValues.filter(({ column }) => column !== name);
+    console.log(newValues);
     setFilterByNumericValues(newValues);
+    setShowFilters(newValues);
+  };
+
+  const removeAll = () => {
+    setShowFilters(INITIAL_STATE);
+    setFilterByNumericValues(INITIAL_STATE);
+  };
+
+  const handleColumnSort = ({ target }) => {
+    setSortColumn(target.value);
+  };
+
+  const handleRadioBtn = ({ target }) => {
+    setRadioButtons(target.value);
+  };
+
+  const handleSort = () => {
+    const numbers = [];
+    const unknowns = [];
+    allPlanets.forEach((value) => {
+      if (!Number.isNaN(Number(value[sortColumn]))) numbers.push(value);
+      else unknowns.push(value);
+    });
+    if (radioButtons === 'ASC') {
+      const newPlanets = numbers.sort((a, b) => Number(a[sortColumn]) - b[sortColumn]);
+      const get = [...newPlanets, ...unknowns];
+      setPlanets(get);
+    }
+    if (radioButtons === 'DESC') {
+      const newPlanets = numbers.sort((a, b) => Number(b[sortColumn]) - a[sortColumn]);
+      const get = [...newPlanets, ...unknowns];
+      setPlanets(get);
+    }
   };
 
   const contextValue = {
@@ -82,6 +126,13 @@ export default function PlanetsProvider({ children }) {
     handleNumericFilter,
     handleSubmit,
     columnOptions,
+    showFilters,
+    removeButton,
+    removeAll,
+    radioButtons,
+    handleRadioBtn,
+    handleColumnSort,
+    handleSort,
   };
 
   return (
