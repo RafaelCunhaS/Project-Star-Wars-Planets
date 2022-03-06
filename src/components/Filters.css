@@ -1,0 +1,143 @@
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background-color: #333333;
+  width: 100%;
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0 1.5rem 0;
+  width: 100%;
+  align-items: center;
+}
+
+.title-container p {
+  font-size: 1.4rem;
+  color: #2b2b2b;
+  text-shadow: -1px 0 #FFE81F, 0 1px #FFE81F, 1px 0 #FFE81F, 0 -1px #FFE81F;
+}
+
+.name-filter {
+  width: 45%;
+  margin-top: 0.6rem;
+  padding: 0.7rem 0.3rem;
+  background-color: #2b2b2b;
+  border: 1px solid #c7c4c4;
+}
+
+.value-filter {
+  width: 15%;
+  border: 1px solid #c7c4c4;
+}
+
+.filter {
+  margin-bottom: 0.5rem;
+  background-color: #2b2b2b;
+  min-height: 1.7rem;
+}
+
+select {
+  border: none;
+  border-bottom: 2px solid #c7c4c4;
+}
+
+select:focus {
+  outline: none;
+}
+
+.radio-btns {
+  display: flex;
+  flex-direction: column;
+  background-color: #333333;
+}
+
+.radio {
+  margin-bottom: 1rem;
+}
+
+.btn {
+  background-color: #2b2b2b;
+  padding: 0.5rem;
+  color: #FFE81F;
+  border: 2px solid #FFE81F;
+}
+
+.btn:hover {
+  background-color: #e6e62877;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.filter-span {
+  display: inline-block;
+  align-content: center;
+  margin: 0 auto;
+}
+
+#delete-btn {
+  background-color: red;
+  padding: 0;
+  margin: 0 0 0.6rem 1rem;
+  border-radius: 5px;
+  vertical-align: sub;
+  border: none;
+}
+
+#delete-btn:active {
+  transform: translateY(1px);
+}
+
+@media only screen and (min-width: 600px) {
+  .name-filter {
+    width: 25%;
+  }
+
+  .value-filter {
+    width: 8%;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .filters-container {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  .filters {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .filter {
+    margin-right: 0.5rem;
+  }
+
+  .filters-container p {
+    font-size: 1.8rem;
+  }
+
+  .name-filter {
+    width: 15%;
+    font-size: 1.1rem;
+  }
+
+  .filter-span {
+    width: 100%;
+  }
+
+  .value-filter {
+    width: 5%;
+  }
+}

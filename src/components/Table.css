@@ -1,0 +1,29 @@
+.table-container {
+  height: 100vh;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+}
+
+table tr:nth-child(even) {
+  background-color: #3d3d3d;
+}
+
+table tr:nth-child(odd) {
+  background-color: #303030;
+}
+
+th {
+  background-color: #111111;
+  padding: 1rem 0.6rem;
+}
+
+td {
+  text-align: center;
+  padding: 1.3rem 0.6rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
