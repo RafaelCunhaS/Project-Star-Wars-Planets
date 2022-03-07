@@ -6,4 +6,4 @@ The goal of the project was to develop a list with filters of planets from the S
 
 ### Running Project!
 
-[StarWars Planets](https://user-images.githubusercontent.com/88805423/156948261-181710a7-0a1f-48c8-97d3-a0cbdf75a422.gif)
+![StarWars Planets](https://user-images.githubusercontent.com/88805423/156948261-181710a7-0a1f-48c8-97d3-a0cbdf75a422.gif)
